@@ -6,7 +6,9 @@ import { useEffect, useRef, useState } from "react";
 
 import Button from "./Button";
 import VideoPreview from "./VideoPreview";
-import { profile } from "../data/portfolio";
+import { contactLink, profile } from "../data/portfolio";
+
+const heroServices = ["Web", "Apps", "UI/UX", "AI", "E-Commerce"];
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -148,7 +150,7 @@ const Hero = () => {
         </div>
 
         <h1 className="special-font hero-heading absolute bottom-5 right-5 z-40 text-[#dfdff2]">
-          M<b>E</b>RN
+          D<b>E</b>V
         </h1>
 
         <div className="absolute left-0 top-0 z-40 size-full">
@@ -157,14 +159,22 @@ const Hero = () => {
               yae<b>e</b>sh
             </h1>
 
-            <p className="mb-5 max-w-64 font-robert-regular text-[#dfdff2]">
-              {profile.role} <br /> Web · Apps · UI/UX · AI · E-Commerce
+            <p className="mb-5 max-w-sm font-robert-regular text-[#dfdff2]">
+              {profile.role}
+              <br />
+              {heroServices.map((item, index) => (
+                // Each item stays on one line; wrapping only happens between items.
+                <span key={item} className="inline-block whitespace-nowrap">
+                  {index > 0 && <span className="px-1.5">·</span>}
+                  {item}
+                </span>
+              ))}
             </p>
 
             <Button
               id="watch-trailer"
               title="Start a project"
-              href="#contact"
+              href={contactLink}
               leftIcon={<TiLocationArrow />}
               containerClass="bg-yellow-300 flex-center gap-1"
             />
@@ -173,7 +183,7 @@ const Hero = () => {
       </div>
 
       <h1 className="special-font hero-heading absolute bottom-5 right-5 text-black">
-        M<b>E</b>RN
+        D<b>E</b>V
       </h1>
     </div>
   );

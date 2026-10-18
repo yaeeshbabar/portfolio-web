@@ -15,6 +15,7 @@ import {
   FaTools,
 } from "react-icons/fa";
 
+import ProfileCard from "./ProfileCard";
 import { profile, services } from "../data/portfolio";
 
 export const BentoTilt = ({ children, className = "" }) => {
@@ -233,6 +234,8 @@ const Features = () => {
             />
           </BentoTilt>
         </div>
+
+        <ProfileCard />
 
         <div className="px-5 pb-10 pt-32">
           <p className="font-circular-web text-lg text-[#dfdff2]">

@@ -2,7 +2,7 @@ import AnimatedTitle from "./AnimatedTitle";
 import Button from "./Button";
 import { FaGithub, FaLinkedin, FaWhatsapp } from "react-icons/fa";
 import { SiUpwork } from "react-icons/si";
-import { profile } from "../data/portfolio";
+import { contactLink, profile } from "../data/portfolio";
 
 const socials = [
   { label: "GitHub", href: profile.github, icon: FaGithub },
@@ -55,7 +55,7 @@ const Footer = () => {
 
           <Button
             title="contact me"
-            href={profile.email ? `mailto:${profile.email}` : profile.agency.url}
+            href={contactLink}
             containerClass="mt-10 cursor-pointer"
           />
 

@@ -24,6 +24,11 @@ export const profile = {
   whatsapp: "https://wa.me/923100786960",
 };
 
+// "Contact me" and "Start a project" open a WhatsApp chat with a ready message.
+export const contactLink = `${profile.whatsapp}?text=${encodeURIComponent(
+  "Hi Yaeesh! I found your portfolio and want to discuss a project."
+)}`;
+
 export const navItems = [
   { label: "Services", href: "#services" },
   { label: "Projects", href: "#projects" },
