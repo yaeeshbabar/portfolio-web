@@ -19,7 +19,7 @@ const ImageClipBox = ({ src, clipClass }) => (
 
 const Footer = () => {
   return (
-    <div id="contact" className="my-10 min-h-96 w-full overflow-hidden px-10">
+    <div id="contact" className="my-10 min-h-96 w-full overflow-hidden px-3 sm:px-10">
       <div className="relative rounded-lg bg-black py-24 text-[#dfdff2] sm:overflow-hidden">
         <div className="absolute -left-20 top-0 hidden h-full w-72 overflow-hidden sm:block lg:left-20 lg:w-96">
           <ImageClipBox
@@ -45,7 +45,7 @@ const Footer = () => {
 
         <div className="flex flex-col items-center text-center">
           <p className="mb-10 font-general text-[10px] uppercase">
-            Let's work together
+            Let&apos;s work together
           </p>
 
           <AnimatedTitle

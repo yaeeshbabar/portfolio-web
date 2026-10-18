@@ -2,6 +2,7 @@ import gsap from "gsap";
 import { useRef } from "react";
 
 import Button from "./Button";
+import LoopVideo from "./LoopVideo";
 import AnimatedTitle from "./AnimatedTitle";
 import { profile } from "../data/portfolio";
 
@@ -47,7 +48,7 @@ const FloatingImage = () => {
   };
 
   return (
-    <div id="story" className="min-h-dvh w-full bg-black text-[#dfdff2] overflow-hidden">
+    <div id="story" className="min-h-svh w-full overflow-hidden bg-black text-[#dfdff2]">
       <div className="flex size-full flex-col items-center py-10 pb-24">
         <p className="font-general text-sm uppercase md:text-[10px]">
           the agency
@@ -62,18 +63,14 @@ const FloatingImage = () => {
           <div className="story-img-container">
             <div className="story-img-mask">
               <div className="story-img-content">
-                <video
+                <LoopVideo
                   ref={frameRef}
                   onMouseMove={handleMouseMove}
                   onMouseLeave={handleMouseLeave}
                   onMouseUp={handleMouseLeave}
                   onMouseEnter={handleMouseLeave}
                   src="/videos/entrance.mp4"
-                  poster="/img/entrance-poster.webp"
-                  autoPlay
-                  loop
-                  muted
-                  playsInline
+                  poster="/videos/posters/entrance.webp"
                   aria-label="Black hole animation"
                   className="w-full object-contain"
                 />

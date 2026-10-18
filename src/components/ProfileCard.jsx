@@ -1,142 +1,200 @@
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/all";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 
 import AnimatedTitle from "./AnimatedTitle";
 import { contactLink, profile } from "../data/portfolio";
+import { hasFinePointer } from "../lib/motion";
 
 gsap.registerPlugin(ScrollTrigger);
 
-// Floating app and website mockups around the photo. `depth` sets how far a
-// card drifts with the mouse; `mobile` cards also show on phones and `wide`
-// ones only on large screens.
+// Colour scheme of the card: "light", "dark" or "violet" (see index.css).
+const THEME = "light";
+
+// App and website mockups scattered around the photo at slight angles.
+// `depth` sets how far a card drifts with the mouse, `behind` tucks it
+// under the photo, `mobile` cards also show on phones and `wide` ones only
+// on large screens.
 const shots = [
-  { src: "travel", label: "Travel app", portrait: false, className: "left-[-6%] top-[46%] w-[44%] md:left-[2%] md:top-[30%] md:w-[22%]", rotate: -6, depth: 34, mobile: true },
-  { src: "chat", label: "AI chat assistant", portrait: true, className: "right-[-4%] top-[40%] w-[30%] md:right-[20%] md:top-[44%] md:w-[11%]", rotate: 5, depth: 16, mobile: true },
-  { src: "finance", label: "Finance app", portrait: false, className: "right-[2%] top-[28%] w-[22%]", rotate: 6, depth: 30 },
-  { src: "sprint", label: "Project management", portrait: true, className: "left-[3%] top-[62%] w-[13%]", rotate: 4, depth: 22 },
-  { src: "dashboard", label: "SaaS dashboard", portrait: false, className: "left-[17%] top-[70%] w-[19%]", rotate: -3, depth: 18 },
-  { src: "books", label: "Reading app", portrait: false, className: "right-[2%] top-[60%] w-[20%]", rotate: -4, depth: 26 },
-  { src: "fitness", label: "Fitness tracker", portrait: true, className: "left-[21%] top-[42%] w-[10%]", rotate: -5, depth: 12 },
-  { src: "realestate", label: "Real estate listing", portrait: false, className: "right-[19%] top-[72%] w-[15%]", rotate: 3, depth: 14 },
-  { src: "grocery", label: "Grocery delivery", portrait: false, className: "left-[1%] top-[5%] w-[15%] xl:block", rotate: 7, depth: 40, wide: true },
-  { src: "store", label: "Online store", portrait: false, className: "right-[1%] top-[5%] w-[15%] xl:block", rotate: -7, depth: 38, wide: true },
+  { src: "travel", label: "Travel app", portrait: false, className: "left-[-12%] top-[64%] w-[44%] md:left-[3%] md:top-[30%] md:w-[23%]", rotate: -4, depth: 26, mobile: true, behind: true },
+  { src: "chat", label: "AI assistant", portrait: true, className: "right-[-7%] top-[58%] w-[28%] md:right-[27%] md:top-[56%] md:w-[8%]", rotate: 4, depth: 18, mobile: true, behind: true },
+  { src: "sprint", label: "Project board", portrait: true, className: "left-[5%] top-[60%] w-[13%]", rotate: 4, depth: 34 },
+  { src: "dashboard", label: "SaaS dashboard", portrait: false, className: "left-[20%] top-[66%] w-[19%]", rotate: -2, depth: 14, behind: true },
+  { src: "finance", label: "Finance app", portrait: false, className: "right-[4%] top-[27%] w-[20%]", rotate: 2, depth: 22 },
+  { src: "books", label: "Reading app", portrait: false, className: "right-[3%] top-[58%] w-[21%]", rotate: -3, depth: 30 },
+  { src: "realestate", label: "Real estate", portrait: false, className: "right-[23%] top-[77%] w-[13%]", rotate: 3, depth: 12, behind: true },
+  { src: "fitness", label: "Fitness tracker", portrait: true, className: "left-[19%] top-[7%] w-[7%]", rotate: -4, depth: 30, wide: true },
+  { src: "grocery", label: "Grocery delivery", portrait: false, className: "left-[2%] top-[6%] w-[14%]", rotate: 3, depth: 36, wide: true },
+  { src: "store", label: "Online store", portrait: false, className: "right-[2%] top-[6%] w-[14%]", rotate: -3, depth: 36, wide: true },
 ];
+
+const visibilityFor = (shot) => {
+  if (shot.wide) return "hidden xl:block";
+  if (shot.mobile) return "block";
+  return "hidden md:block";
+};
 
 const ProfileCard = () => {
   const cardRef = useRef(null);
 
   useGSAP(
     () => {
-      gsap.from(".float-layer", {
+      const trigger = { trigger: cardRef.current, start: "top 75%" };
+
+      gsap.from(".profile-dev", {
         opacity: 0,
-        y: 80,
-        scale: 0.8,
-        stagger: 0.08,
-        duration: 0.9,
+        scale: 0.85,
+        duration: 1.4,
         ease: "power3.out",
-        scrollTrigger: { trigger: cardRef.current, start: "top 75%" },
+        scrollTrigger: trigger,
+      });
+
+      gsap.from(".shot-pop", {
+        opacity: 0,
+        y: 60,
+        scale: 0.9,
+        stagger: 0.06,
+        duration: 1,
+        ease: "power3.out",
+        scrollTrigger: { ...trigger, start: "top 70%" },
       });
 
       gsap.from(".profile-photo", {
         opacity: 0,
-        y: 120,
-        duration: 1.1,
+        y: 100,
+        duration: 1.2,
         ease: "power3.out",
-        scrollTrigger: { trigger: cardRef.current, start: "top 70%" },
-      });
-
-      // Gentle idle float, each card on its own rhythm.
-      gsap.utils.toArray(".float-inner").forEach((el, index) => {
-        gsap.to(el, {
-          y: index % 2 ? 14 : -14,
-          duration: 2.6 + (index % 4) * 0.45,
-          ease: "sine.inOut",
-          yoyo: true,
-          repeat: -1,
-        });
+        scrollTrigger: { ...trigger, start: "top 65%" },
       });
     },
     { scope: cardRef }
   );
 
-  const handleMouseMove = (event) => {
-    const rect = cardRef.current.getBoundingClientRect();
-    const x = (event.clientX - rect.left) / rect.width - 0.5;
-    const y = (event.clientY - rect.top) / rect.height - 0.5;
-
-    gsap.utils.toArray(".float-layer", cardRef.current).forEach((el) => {
-      const depth = Number(el.dataset.depth);
-      gsap.to(el, { x: x * depth, y: y * depth, duration: 0.8, ease: "power2.out" });
+  // Pause the gentle float while the card is off screen.
+  useEffect(() => {
+    const card = cardRef.current;
+    const observer = new IntersectionObserver(([entry]) => {
+      card.dataset.active = entry.isIntersecting ? "true" : "false";
     });
-    gsap.to(".profile-photo", { x: x * -12, duration: 0.8, ease: "power2.out" });
-  };
+    observer.observe(card);
+    return () => observer.disconnect();
+  }, []);
 
-  const handleMouseLeave = () => {
-    gsap.to([...gsap.utils.toArray(".float-layer", cardRef.current), ".profile-photo"], {
-      x: 0,
-      y: 0,
-      duration: 0.8,
-      ease: "power2.out",
-    });
-  };
+  // Mouse users get a calm parallax: nearer cards drift further. Touch
+  // screens keep the layout still apart from the float.
+  useEffect(() => {
+    const card = cardRef.current;
+    if (!hasFinePointer()) return undefined;
+
+    const layers = gsap.utils.toArray(".profile-layer", card).map((el) => ({
+      depth: Number(el.dataset.depth),
+      x: gsap.quickTo(el, "x", { duration: 1, ease: "power3.out" }),
+      y: gsap.quickTo(el, "y", { duration: 1, ease: "power3.out" }),
+    }));
+
+    const handleMove = (event) => {
+      const rect = card.getBoundingClientRect();
+      const x = (event.clientX - rect.left) / rect.width - 0.5;
+      const y = (event.clientY - rect.top) / rect.height - 0.5;
+      layers.forEach((layer) => {
+        layer.x(x * layer.depth);
+        layer.y(y * layer.depth);
+      });
+    };
+
+    const handleLeave = () => {
+      layers.forEach((layer) => {
+        layer.x(0);
+        layer.y(0);
+      });
+    };
+
+    card.addEventListener("pointermove", handleMove);
+    card.addEventListener("pointerleave", handleLeave);
+    return () => {
+      card.removeEventListener("pointermove", handleMove);
+      card.removeEventListener("pointerleave", handleLeave);
+    };
+  }, []);
 
   return (
     <div
       id="about-me"
       ref={cardRef}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      className="relative mt-32 h-[40rem] w-full overflow-hidden rounded-3xl bg-[#dfdff2] sm:h-[46rem] lg:h-[52rem]"
+      data-theme={THEME}
+      data-active="false"
+      className="profile-card relative mt-32 h-[40rem] w-full overflow-hidden rounded-3xl sm:h-[46rem] lg:h-[52rem]"
     >
-      <div className="relative z-30 flex flex-col items-center pt-14 md:pt-16">
-        <p className="font-general text-[10px] uppercase text-black">
+      <div className="relative z-30 flex flex-col items-center px-3 pt-12 md:pt-16">
+        <p className="profile-label font-general text-[10px] uppercase">
           Hi, I&apos;m {profile.name}
         </p>
         <AnimatedTitle
           title="creating digital <br /> experiences that <br /> quietly sl<b>a</b>y"
-          containerClass="mt-5 !text-black text-center !text-4xl sm:!text-5xl md:!text-[4.2rem] !px-4"
+          containerClass="profile-headline mt-5 text-center !text-4xl sm:!text-5xl md:!text-[4.2rem] !px-0"
         />
+      </div>
+
+      {/* The big DEV behind the photo, in the same letters as the hero title */}
+      <div
+        aria-hidden="true"
+        className="profile-layer absolute inset-x-0 top-[33%] z-0 flex justify-center md:top-[33%]"
+        data-depth="-10"
+      >
+        <span className="profile-dev special-font font-zentry uppercase leading-none">
+          D<b>E</b>V
+        </span>
       </div>
 
       {shots.map((shot) => (
         <div
           key={shot.src}
           data-depth={shot.depth}
-          className={`float-layer absolute z-10 ${shot.className} ${
-            shot.mobile ? "" : "hidden"
-          } ${shot.wide ? "" : "md:block"}`}
+          className={`profile-layer absolute ${shot.behind ? "z-10" : "z-20"} ${shot.className} ${visibilityFor(shot)}`}
         >
-          <div
-            className="float-inner overflow-hidden rounded-xl border border-black/10 bg-white shadow-[0_20px_50px_rgba(0,0,0,0.25)]"
-            style={{ rotate: `${shot.rotate}deg` }}
-          >
-            <img
-              src={`/profile-card/${shot.src}.webp`}
-              alt={shot.label}
-              loading="lazy"
-              className={`w-full object-cover ${
-                shot.portrait ? "aspect-[3/4]" : "aspect-[4/3]"
-              }`}
-            />
+          <div className="shot-pop">
+            <div
+              className="shot-float"
+              style={{
+                "--rotate": `${shot.rotate}deg`,
+                "--float-duration": `${4 + (shot.depth % 5) * 0.6}s`,
+                "--float-delay": `${-shot.depth / 10}s`,
+              }}
+            >
+              <img
+                src={`/profile-card/${shot.src}.webp`}
+                alt={shot.label}
+                loading="lazy"
+                decoding="async"
+                className={`shot-img block w-full object-cover ${
+                  shot.portrait ? "aspect-[3/4]" : "aspect-[4/3]"
+                }`}
+              />
+            </div>
           </div>
         </div>
       ))}
 
-      <img
-        src="/img/yaeesh-cutout.webp"
-        alt={profile.name}
-        className="profile-photo pointer-events-none absolute bottom-0 left-1/2 z-20 w-[78%] max-w-[34rem] -translate-x-1/2 sm:w-[56%] md:w-[38%]"
-      />
+      <div
+        className="profile-layer pointer-events-none absolute inset-x-0 bottom-0 z-[15] mx-auto w-[84%] max-w-[30rem] sm:w-[54%] md:w-[34%]"
+        data-depth="-6"
+      >
+        <img
+          src="/img/yaeesh-cutout.webp"
+          alt={profile.name}
+          decoding="async"
+          className="profile-photo block w-full"
+        />
+      </div>
 
       <a
         href={contactLink}
         target="_blank"
         rel="noopener noreferrer"
-        className="absolute bottom-5 left-5 z-30 flex items-center gap-2 rounded-full bg-black px-4 py-2 font-general text-[10px] uppercase text-[#dfdff2]"
+        className="profile-hire absolute bottom-5 left-1/2 z-30 flex -translate-x-1/2 items-center gap-2 whitespace-nowrap rounded-full px-5 py-3 font-general text-[10px] uppercase md:bottom-8 md:left-8 md:translate-x-0"
       >
-        <span className="size-2 animate-pulse rounded-full bg-green-400" />
+        <span aria-hidden="true" className="profile-dot size-2 animate-pulse rounded-full" />
         Available for new projects
       </a>
     </div>

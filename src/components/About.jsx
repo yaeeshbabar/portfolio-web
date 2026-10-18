@@ -17,6 +17,7 @@ const About = () => {
         scrub: 0.5,
         pin: true,
         pinSpacing: true,
+        anticipatePin: 1,
       },
     });
 
@@ -50,7 +51,7 @@ const About = () => {
         </div>
       </div>
 
-      <div className="h-dvh w-full" id="clip">
+      <div className="h-svh w-full" id="clip">
         <div className="mask-clip-path about-image">
           <img
             src="img/about.webp"

@@ -1,40 +1,75 @@
-@import url("https://fonts.cdnfonts.com/css/general-sans");
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* Nothing may scroll the page sideways. `clip` (unlike `hidden`) keeps the
+   page as the scroller, so pinned sections and smooth scroll still work. */
+html,
+body {
+  max-width: 100%;
+  overflow-x: clip;
+}
+
 body {
   width: 100%;
-  /* overflow-x: hidden; */
   background-color: #dfdff0;
   font-family: "General Sans", sans-serif;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-text-size-adjust: 100%;
+  text-rendering: optimizeLegibility;
+}
+
+/* Background videos never show the browser's play button or controls. */
+video::-webkit-media-controls,
+video::-webkit-media-controls-start-playback-button,
+video::-webkit-media-controls-overlay-play-button {
+  display: none !important;
+  -webkit-appearance: none;
+}
+
+/* Lenis smooth scroll (desktop only) */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-stopped {
+  overflow: clip;
 }
 
 @layer base {
   @font-face {
     font-family: "circular-web";
     src: url("/fonts/circularweb-book.woff2") format("woff2");
+    font-display: swap;
   }
 
   @font-face {
     font-family: "general";
     src: url("/fonts/general.woff2") format("woff2");
+    font-display: swap;
   }
 
   @font-face {
     font-family: "robert-medium";
     src: url("/fonts/robert-medium.woff2") format("woff2");
+    font-display: swap;
   }
 
   @font-face {
     font-family: "robert-regular";
     src: url("/fonts/robert-regular.woff2") format("woff2");
+    font-display: swap;
   }
 
   @font-face {
     font-family: "zentry";
     src: url("/fonts/zentry-regular.woff2") format("woff2");
+    font-display: swap;
   }
 }
 
@@ -48,7 +83,7 @@ body {
   }
 
   .floating-nav {
-    @apply bg-black rounded-lg border;
+    @apply rounded-xl border border-white/10 bg-black/80 backdrop-blur-md;
   }
 
   .absolute-center {
@@ -74,15 +109,15 @@ body {
   }
 
   .about-subtext {
-    @apply absolute bottom-[-90dvh] left-1/2 w-full max-w-96 -translate-x-1/2 text-center font-circular-web text-lg md:max-w-[34rem];
+    @apply absolute bottom-[-90svh] left-1/2 w-full max-w-96 -translate-x-1/2 px-5 text-center font-circular-web text-lg md:max-w-[34rem];
   }
 
   .about-image {
-    @apply absolute left-1/2 top-0 z-20 h-[60vh] w-96 origin-center -translate-x-1/2 overflow-hidden rounded-3xl md:w-[30vw];
+    @apply absolute left-1/2 top-0 z-20 h-[60svh] w-[min(24rem,86vw)] origin-center -translate-x-1/2 overflow-hidden rounded-3xl md:w-[30vw];
   }
 
   .animated-title {
-    @apply flex flex-col gap-1 text-6xl uppercase leading-[.8] text-[#dfdff2] sm:px-32 md:text-[5rem];
+    @apply flex flex-col gap-1 text-6xl uppercase leading-[.8] text-[#dfdff2] md:px-32 md:text-[5rem];
   }
 
   .animated-word {
@@ -105,7 +140,7 @@ body {
   }
 
   .story-img-container {
-    @apply relative md:h-dvh h-[90vh] w-full;
+    @apply relative md:h-svh h-[90svh] w-full;
     filter: url("#flt_tag");
   }
 
@@ -115,7 +150,7 @@ body {
   }
 
   .story-img-content {
-    @apply absolute w-full md:h-dvh h-[50dvh] opacity-100 left-10 top-16 md:left-0 md:top-10 lg:left-[-300px] lg:top-[-100px];
+    @apply absolute w-full md:h-svh h-[50svh] opacity-100 left-10 top-16 md:left-0 md:top-10 lg:left-[-300px] lg:top-[-100px];
     transform: translate3d(0, 0, 0) rotateX(0) rotateY(0) rotateZ(0) scale(1);
   }
 
@@ -270,5 +305,144 @@ body {
   50% {
     transform: translateY(66%) scale(0.65);
     opacity: 0.8;
+  }
+}
+
+/* ---------- Profile card: editorial layout with a big DEV ---------- */
+
+/* Bold headline on top, the photo in the middle and app screens scattered
+   around it. Colours come from the site: pick a scheme with THEME in
+   ProfileCard.jsx. */
+.profile-card {
+  --card-bg: #0b0b0d;
+  --card-ink: #dfdff2;
+  --card-muted: rgba(223, 223, 242, 0.6);
+  --card-dev: #5724ff;
+  --card-accent: #edff66;
+  --card-edge: rgba(255, 255, 255, 0.08);
+  --shot-shadow: 0 18px 40px -18px rgba(0, 0, 0, 0.8);
+  background: var(--card-bg);
+  box-shadow: inset 0 0 0 1px var(--card-edge);
+  container-type: inline-size;
+  isolation: isolate;
+}
+
+.profile-card[data-theme="light"] {
+  --card-bg: #dfdff2;
+  --card-ink: #000;
+  --card-muted: rgba(0, 0, 0, 0.6);
+  --card-dev: #5724ff;
+  --card-accent: #5724ff;
+  --card-edge: transparent;
+  --shot-shadow: 0 18px 40px -16px rgba(20, 10, 60, 0.35);
+}
+
+.profile-card[data-theme="violet"] {
+  --card-bg: #5724ff;
+  --card-ink: #dfdff2;
+  --card-muted: rgba(223, 223, 242, 0.75);
+  --card-dev: #edff66;
+  --card-accent: #edff66;
+  --card-edge: transparent;
+  --shot-shadow: 0 18px 40px -16px rgba(10, 0, 40, 0.55);
+}
+
+.profile-label {
+  color: var(--card-muted);
+  letter-spacing: 0.2em;
+}
+
+.profile-headline {
+  color: var(--card-ink);
+}
+
+.profile-headline b {
+  color: var(--card-accent);
+}
+
+.profile-dev {
+  font-size: 56cqw;
+  color: var(--card-dev);
+  letter-spacing: -0.01em;
+}
+
+@media (min-width: 768px) {
+  .profile-dev {
+    font-size: min(30cqw, 26rem);
+  }
+}
+
+.shot-float {
+  rotate: var(--rotate);
+  animation: profile-float var(--float-duration) ease-in-out var(--float-delay) infinite alternate;
+}
+
+.shot-img {
+  border-radius: 12px;
+  box-shadow: var(--shot-shadow);
+}
+
+/* The portrait keeps its natural colours. It fades out where the
+   original photo was cropped at the sides. */
+.profile-photo {
+  -webkit-mask-image: radial-gradient(95% 92% at 50% 30%, #000 70%, transparent 100%);
+  mask-image: radial-gradient(95% 92% at 50% 30%, #000 70%, transparent 100%);
+}
+
+.profile-hire {
+  color: #000;
+  letter-spacing: 0.12em;
+  background: #edff66;
+  transition: background-color 0.3s;
+}
+
+.profile-card[data-theme="violet"] .profile-hire {
+  background: #000;
+  color: #edff66;
+}
+
+.profile-hire:hover,
+.profile-hire:focus-visible {
+  background: #dfdff2;
+  color: #000;
+}
+
+.profile-dot {
+  background: #5724ff;
+}
+
+.profile-card[data-theme="violet"] .profile-dot {
+  background: #edff66;
+}
+
+.profile-card[data-active="false"] *,
+.profile-card[data-active="false"] {
+  animation-play-state: paused !important;
+}
+
+@keyframes profile-float {
+  from {
+    transform: translateY(-6px);
+  }
+  to {
+    transform: translateY(6px);
+  }
+}
+
+/* Visitors who ask for less motion get still pages: no looping CSS
+   animations and titles that are simply visible. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .animated-word {
+    opacity: 1;
+    transform: none;
   }
 }

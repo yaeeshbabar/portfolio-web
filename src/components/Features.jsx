@@ -15,18 +15,21 @@ import {
   FaTools,
 } from "react-icons/fa";
 
+import LoopVideo from "./LoopVideo";
 import ProfileCard from "./ProfileCard";
+import { hasFinePointer, posterFor } from "../lib/motion";
 import { profile, services } from "../data/portfolio";
 
 export const BentoTilt = ({ children, className = "" }) => {
-  const [transformStyle, setTransformStyle] = useState("");
   const itemRef = useRef(null);
 
+  // Writes the tilt straight to the element so moving the mouse doesn't
+  // re-render the card. Touch screens skip the tilt.
   const handleMouseMove = (event) => {
-    if (!itemRef.current) return;
+    const element = itemRef.current;
+    if (!element || !hasFinePointer()) return;
 
-    const { left, top, width, height } =
-      itemRef.current.getBoundingClientRect();
+    const { left, top, width, height } = element.getBoundingClientRect();
 
     const relativeX = (event.clientX - left) / width;
     const relativeY = (event.clientY - top) / height;
@@ -34,12 +37,11 @@ export const BentoTilt = ({ children, className = "" }) => {
     const tiltX = (relativeY - 0.5) * 5;
     const tiltY = (relativeX - 0.5) * -5;
 
-    const newTransform = `perspective(700px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) scale3d(.95, .95, .95)`;
-    setTransformStyle(newTransform);
+    element.style.transform = `perspective(700px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) scale3d(.95, .95, .95)`;
   };
 
   const handleMouseLeave = () => {
-    setTransformStyle("");
+    if (itemRef.current) itemRef.current.style.transform = "";
   };
 
   return (
@@ -48,7 +50,6 @@ export const BentoTilt = ({ children, className = "" }) => {
       className={className}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      style={{ transform: transformStyle }}
     >
       {children}
     </div>
@@ -81,12 +82,10 @@ export const BentoCard = ({
 
   return (
     <div className="relative size-full">
-      <video
+      <LoopVideo
         src={src}
-        loop
-        muted
-        autoPlay
-        className="absolute left-0 top-0 size-full object-cover object-center"
+        poster={posterFor(src)}
+        className="pointer-events-none absolute left-0 top-0 size-full object-cover object-center"
       />
       <div className="relative z-10 flex size-full flex-col justify-between p-5 text-[#dfdff2]">
         <div>
@@ -160,7 +159,7 @@ const Features = () => {
   const [first, ...rest] = services;
 
   return (
-    <section id="services" className="bg-black pb-52">
+    <section id="services" className="overflow-x-clip bg-black pb-52">
       <div className="container mx-auto px-3 md:px-10">
         <div className="px-5 py-32">
           <p className="font-circular-web text-lg text-[#dfdff2]">
@@ -225,12 +224,10 @@ const Features = () => {
           </BentoTilt>
 
           <BentoTilt className="bento-tilt_2">
-            <video
+            <LoopVideo
               src="videos/feature-5.mp4"
-              loop
-              muted
-              autoPlay
-              className="size-full object-cover object-center"
+              poster={posterFor("videos/feature-5.mp4")}
+              className="pointer-events-none size-full object-cover object-center"
             />
           </BentoTilt>
         </div>

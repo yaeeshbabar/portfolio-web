@@ -176,20 +176,6 @@ export const experience = [
     period: "2023",
     description: "Built frontend features for production web products.",
   },
-  {
-    role: "DSA Intern",
-    company: "Speridian Technologies",
-    image: "experience/speridian.webp",
-    period: "2022",
-    description: "Worked on data structures and algorithms problem solving.",
-  },
-  {
-    role: ".NET Intern",
-    company: "NetSol Technologies",
-    image: "experience/netsol.webp",
-    period: "2022",
-    description: "First industry internship, working with the .NET stack.",
-  },
 ];
 
 export const education = [
@@ -199,6 +185,8 @@ export const education = [
   { title: "PHP Laravel & Advanced Web Dev", place: "BOSTON / Singularity Pro", period: "2025" },
   { title: "MERN Stack Development", place: "Knowledge Streams", period: "2024" },
   { title: "Frontend Development", place: "PNY Trainings", period: "2021" },
+  { title: "DSA Internship", place: "Speridian Technologies", period: "2022" },
+  { title: ".NET Internship", place: "NetSol Technologies", period: "2022" },
 ];
 
 // One entry per project. `image` is the thumbnail from the repo README, a

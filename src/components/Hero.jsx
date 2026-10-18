@@ -5,7 +5,9 @@ import { TiLocationArrow } from "react-icons/ti";
 import { useEffect, useRef, useState } from "react";
 
 import Button from "./Button";
+import LoopVideo from "./LoopVideo";
 import VideoPreview from "./VideoPreview";
+import { isPortraitScreen, posterFor } from "../lib/motion";
 import { contactLink, profile } from "../data/portfolio";
 
 const heroServices = ["Web", "Apps", "UI/UX", "AI", "E-Commerce"];
@@ -15,26 +17,17 @@ gsap.registerPlugin(ScrollTrigger);
 const Hero = () => {
   const [currentIndex, setCurrentIndex] = useState(1);
   const [hasClicked, setHasClicked] = useState(false);
-
   const [loading, setLoading] = useState(true);
-  const [loadedVideos, setLoadedVideos] = useState(0);
+  // Phones get portrait crops of the hero videos: a third of the size and
+  // far less work to decode.
+  const [portrait] = useState(isPortraitScreen);
 
   const totalVideos = 4;
   const nextVdRef = useRef(null);
 
-  const handleVideoLoad = () => {
-    setLoadedVideos((prev) => prev + 1);
-  };
-
-  useEffect(() => {
-    if (loadedVideos === totalVideos - 1) {
-      setLoading(false);
-    }
-  }, [loadedVideos]);
-
   // Don't keep visitors on the loader if a video is slow or can't decode.
   useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 4000);
+    const timer = setTimeout(() => setLoading(false), 2500);
     return () => clearTimeout(timer);
   }, []);
 
@@ -55,7 +48,7 @@ const Hero = () => {
           height: "100%",
           duration: 1,
           ease: "power1.inOut",
-          onStart: () => nextVdRef.current.play(),
+          onStart: () => nextVdRef.current?.play()?.catch(() => {}),
         });
         gsap.from("#current-video", {
           transformOrigin: "center center",
@@ -89,24 +82,28 @@ const Hero = () => {
     });
   });
 
-  const getVideoSrc = (index) => `videos/hero-${index}.mp4`;
+  const getVideoSrc = (index) =>
+    `videos/hero-${index}${portrait ? "-m" : ""}.mp4`;
 
   return (
-    <div className="relative h-dvh w-full overflow-x-hidden">
-      {loading && (
-        <div className="flex-center absolute z-[100] h-dvh w-full overflow-hidden bg-violet-50">
-          {/* https://uiverse.io/G4b413l/tidy-walrus-92 */}
-          <div className="three-body">
-            <div className="three-body__dot"></div>
-            <div className="three-body__dot"></div>
-            <div className="three-body__dot"></div>
-          </div>
+    <div className="relative h-svh w-full overflow-x-clip">
+      <div
+        aria-hidden="true"
+        className={`flex-center absolute z-[100] h-svh w-full overflow-hidden bg-violet-50 transition-opacity duration-700 ${
+          loading ? "opacity-100" : "pointer-events-none opacity-0"
+        }`}
+      >
+        {/* https://uiverse.io/G4b413l/tidy-walrus-92 */}
+        <div className="three-body">
+          <div className="three-body__dot"></div>
+          <div className="three-body__dot"></div>
+          <div className="three-body__dot"></div>
         </div>
-      )}
+      </div>
 
       <div
         id="video-frame"
-        className="relative z-10 h-dvh w-full overflow-hidden rounded-lg bg-blue-75"
+        className="relative z-10 h-svh w-full overflow-hidden rounded-lg bg-blue-75"
       >
         <div>
           <div className="mask-clip-path absolute-center absolute z-50 size-64 cursor-pointer overflow-hidden rounded-lg">
@@ -115,37 +112,35 @@ const Hero = () => {
                 onClick={handleMiniVdClick}
                 className="origin-center scale-50 opacity-0 transition-all duration-500 ease-in hover:scale-100 hover:opacity-100"
               >
-                <video
-                  ref={nextVdRef}
+                <LoopVideo
                   src={getVideoSrc((currentIndex % totalVideos) + 1)}
-                  loop
-                  muted
+                  poster={posterFor(getVideoSrc((currentIndex % totalVideos) + 1))}
+                  autoPlay={false}
                   id="current-video"
-                  className="size-64 origin-center scale-150 object-cover object-center"
-                  onLoadedData={handleVideoLoad}
+                  className="pointer-events-none size-64 origin-center scale-150 object-cover object-center"
                 />
               </div>
             </VideoPreview>
           </div>
 
-          <video
+          <LoopVideo
             ref={nextVdRef}
             src={getVideoSrc(currentIndex)}
-            loop
-            muted
+            poster={posterFor(getVideoSrc(currentIndex))}
+            autoPlay={false}
             id="next-video"
-            className="absolute-center invisible absolute z-20 size-64 object-cover object-center"
-            onLoadedData={handleVideoLoad}
+            className="absolute-center pointer-events-none invisible absolute z-20 size-64 object-cover object-center"
           />
-          <video
+          <LoopVideo
             src={getVideoSrc(
               currentIndex === totalVideos - 1 ? 1 : currentIndex
             )}
-            autoPlay
-            loop
-            muted
-            className="absolute left-0 top-0 size-full object-cover object-center"
-            onLoadedData={handleVideoLoad}
+            poster={posterFor(
+              getVideoSrc(currentIndex === totalVideos - 1 ? 1 : currentIndex)
+            )}
+            eager
+            className="pointer-events-none absolute left-0 top-0 size-full object-cover object-center"
+            onLoadedData={() => setLoading(false)}
           />
         </div>
 

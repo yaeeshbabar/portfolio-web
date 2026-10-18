@@ -81,7 +81,7 @@ const ProjectCard = ({ project }) => (
 );
 
 const Projects = () => (
-  <section id="projects" className="bg-black pb-32 text-[#dfdff2]">
+  <section id="projects" className="overflow-x-clip bg-black pb-32 text-[#dfdff2]">
     <div className="container mx-auto px-3 md:px-10">
       <div className="flex flex-col items-center gap-5 pt-10">
         <p className="font-general text-sm uppercase md:text-[10px]">

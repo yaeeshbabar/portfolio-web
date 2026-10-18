@@ -28,3 +28,13 @@ Project thumbnails live in `public/projects/`, experience logos in
 `public/experience/`. The remaining images and videos in `public/img` and
 `public/videos` are still the Zentry template's game art; replace them with
 your own before going live.
+
+## Videos
+Each video in `public/videos` has a still frame with the same name in
+`public/videos/posters/` (shown while it loads). The hero videos also have a
+phone version, `hero-1-m.mp4` and so on, cropped to portrait. If you swap a
+video, keep it small: 720p H.264 with no sound, for example
+
+  ffmpeg -i in.mp4 -vf scale=1280:-2 -c:v libx264 -crf 27 -movflags +faststart -an out.mp4
+  ffmpeg -i in.mp4 -vf "crop=ih*9/16:ih,scale=540:960" -c:v libx264 -crf 27 -movflags +faststart -an out-m.mp4
+  ffmpeg -i out.mp4 -frames:v 1 posters/out.webp
