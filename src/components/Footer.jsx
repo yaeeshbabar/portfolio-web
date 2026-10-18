@@ -81,7 +81,7 @@ const Footer = () => {
       </div>
 
       <p className="py-6 text-center font-general text-[10px] uppercase opacity-60">
-        © {new Date().getFullYear()} {profile.name}. Built with React & GSAP.
+        © {new Date().getFullYear()} {profile.name}. Made with ♡ & a lot of caffeine.
       </p>
     </div>
   );

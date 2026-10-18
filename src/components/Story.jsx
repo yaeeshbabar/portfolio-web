@@ -62,15 +62,20 @@ const FloatingImage = () => {
           <div className="story-img-container">
             <div className="story-img-mask">
               <div className="story-img-content">
-                <img
+                <video
                   ref={frameRef}
                   onMouseMove={handleMouseMove}
                   onMouseLeave={handleMouseLeave}
                   onMouseUp={handleMouseLeave}
                   onMouseEnter={handleMouseLeave}
-                  src="/img/entrance.webp"
-                  alt="entrance.webp"
-                  className="object-contain"
+                  src="/videos/entrance.mp4"
+                  poster="/img/entrance-poster.webp"
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  aria-label="Black hole animation"
+                  className="w-full object-contain"
                 />
               </div>
             </div>

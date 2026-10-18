@@ -158,7 +158,7 @@ const Hero = () => {
             </h1>
 
             <p className="mb-5 max-w-64 font-robert-regular text-[#dfdff2]">
-              {profile.role} <br /> SaaS · Web · Mobile · Shopify · CRM
+              {profile.role} <br /> Web · Apps · UI/UX · AI · E-Commerce
             </p>
 
             <Button

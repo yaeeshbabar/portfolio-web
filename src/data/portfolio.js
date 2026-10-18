@@ -6,7 +6,7 @@ export const profile = {
   role: "MERN Stack Developer",
   tagline: "MERN Stack Developer & Founder of Black Hole Matrix",
   summary:
-    "SaaS, web apps, mobile apps, Shopify, WordPress, CRMs and AI automation for startups, businesses and agencies worldwide.",
+    "Web and app development, UI/UX, backend, AI automation, WordPress, e-commerce, Shopify, SaaS and CRMs for startups, businesses and agencies worldwide.",
   location: "Lahore, Pakistan",
   projectCount: "70+",
   agency: {
@@ -36,23 +36,23 @@ export const navItems = [
 // the full services grid.
 export const services = [
   {
-    title: "web <b>a</b>pps",
+    title: "web devel<b>o</b>pment",
     description:
-      "Custom full-stack web applications on the MERN stack, fast, secure and built to scale.",
+      "Websites, web apps and dashboards built on the MERN stack, fast, secure and ready to scale.",
     video: "videos/feature-1.mp4",
     icon: "web",
   },
   {
-    title: "s<b>a</b>as",
+    title: "ui/ux & fr<b>o</b>ntend",
     description:
-      "SaaS products from MVP to launch: auth, subscriptions, Stripe billing, dashboards and multi-tenant backends.",
+      "Modern interfaces, smooth animations and responsive design that looks great on every screen.",
     video: "videos/feature-2.mp4",
-    icon: "saas",
+    icon: "design",
   },
   {
-    title: "m<b>o</b>bile",
+    title: "app devel<b>o</b>pment",
     description:
-      "Cross-platform iOS and Android apps with React Native, sharing one backend with your web app.",
+      "Android, iOS and cross-platform apps with React Native, sharing one backend with your web app.",
     video: "videos/feature-3.mp4",
     icon: "mobile",
   },
@@ -64,40 +64,40 @@ export const services = [
     icon: "shopify",
   },
   {
-    title: "w<b>o</b>rdpress",
+    title: "backend devel<b>o</b>pment",
     description:
-      "WordPress and WooCommerce sites with custom themes, plugins and easy content editing.",
+      "APIs, databases, authentication and server-side systems with Node.js, MongoDB, PostgreSQL and Firebase.",
+    icon: "api",
+  },
+  {
+    title: "a<b>i</b> & automation",
+    description:
+      "AI integration, chatbots, n8n automation and AI-powered apps that save you hours of work.",
+    icon: "ai",
+  },
+  {
+    title: "w<b>o</b>rdpress & cms",
+    description:
+      "WordPress websites, custom themes and plugins, WooCommerce and CMS solutions you can edit yourself.",
     icon: "wordpress",
+  },
+  {
+    title: "e-co<b>m</b>merce",
+    description:
+      "Online stores with product systems, carts, payment integration, inventory and order tracking.",
+    icon: "store",
+  },
+  {
+    title: "s<b>a</b>as",
+    description:
+      "SaaS products from MVP to launch: auth, subscriptions, Stripe billing, dashboards and multi-tenant backends.",
+    icon: "saas",
   },
   {
     title: "c<b>r</b>ms",
     description:
       "Custom CRMs, admin panels and internal tools to manage leads, clients, sales and teams.",
     icon: "crm",
-  },
-  {
-    title: "e-co<b>m</b>merce",
-    description:
-      "Online stores with carts, payments, inventory, order tracking and admin dashboards.",
-    icon: "store",
-  },
-  {
-    title: "a<b>i</b> & automation",
-    description:
-      "OpenAI chatbots, AI features and n8n workflows that automate repetitive work.",
-    icon: "ai",
-  },
-  {
-    title: "a<b>p</b>is & backend",
-    description:
-      "REST APIs, integrations, payment gateways and databases with MongoDB, PostgreSQL and Firebase.",
-    icon: "api",
-  },
-  {
-    title: "ui / u<b>x</b>",
-    description:
-      "Figma designs and responsive, animated interfaces that look great on every screen.",
-    icon: "design",
   },
   {
     title: "landing pa<b>g</b>es",
@@ -141,6 +141,7 @@ export const experience = [
   {
     role: "MERN Stack Developer",
     company: "Stewart Pakistan",
+    image: "experience/stewart.webp",
     period: "Present",
     description:
       "Building and maintaining full-stack MERN applications for production clients.",
@@ -148,6 +149,7 @@ export const experience = [
   {
     role: "Founder & CEO",
     company: "Black Hole Matrix",
+    image: "experience/blackhole.webp",
     period: "2024 – Present",
     url: "https://www.blackholepk.com",
     description:
@@ -156,6 +158,7 @@ export const experience = [
   {
     role: "Freelance Full Stack Developer",
     company: "Upwork & Fiverr",
+    image: "experience/upwork.webp",
     period: "2023 – Present",
     url: "https://www.upwork.com/freelancers/~0175e100f3b0b85788",
     description:
@@ -164,18 +167,21 @@ export const experience = [
   {
     role: "Frontend Intern",
     company: "Speridian Technologies",
+    image: "experience/speridian.webp",
     period: "2023",
     description: "Built frontend features for production web products.",
   },
   {
     role: "DSA Intern",
     company: "Speridian Technologies",
+    image: "experience/speridian.webp",
     period: "2022",
     description: "Worked on data structures and algorithms problem solving.",
   },
   {
     role: ".NET Intern",
     company: "NetSol Technologies",
+    image: "experience/netsol.webp",
     period: "2022",
     description: "First industry internship, working with the .NET stack.",
   },
@@ -190,8 +196,8 @@ export const education = [
   { title: "Frontend Development", place: "PNY Trainings", period: "2021" },
 ];
 
-// One entry per project. `image` is the thumbnail taken from the repo
-// README (saved under public/projects/). No image falls back to a cover.
+// One entry per project. `image` is the thumbnail from the repo README, a
+// screenshot of the running repo, or a generated cover (public/projects/).
 const gh = (repo) => `https://github.com/yaeeshbabar/${repo}`;
 
 export const projects = [
@@ -241,7 +247,7 @@ export const projects = [
     description:
       "Sneaker e-commerce store with product pages, size selection, cart and checkout.",
     tech: ["Next.js", "Tailwind CSS", "TypeScript"],
-    image: "",
+    image: "projects/kicks.webp",
     github: gh("ecommerce-kicks-main"),
   },
   {
@@ -249,7 +255,7 @@ export const projects = [
     description:
       "Backend for a ride-hailing platform: rider and driver auth, ride requests, driver status, fares and trip history.",
     tech: ["Node.js", "Express", "TypeScript", "PostgreSQL", "JWT"],
-    image: "",
+    image: "projects/ride-booking.webp",
     github: gh("ride-booking"),
   },
   {
@@ -257,7 +263,7 @@ export const projects = [
     description:
       "Kanban-style project management tool with drag-and-drop boards, team assignment, priorities, deadlines and roles.",
     tech: ["React", "Node.js", "MongoDB"],
-    image: "",
+    image: "projects/task-management.webp",
   },
   {
     title: "Awesome n8n Templates",

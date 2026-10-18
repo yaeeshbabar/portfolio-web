@@ -7,10 +7,10 @@ const Experience = () => (
     <div className="container mx-auto px-3 md:px-10">
       <div className="flex flex-col items-center gap-5">
         <p className="font-general text-sm uppercase md:text-[10px]">
-          Experience
+          Where I&apos;ve worked
         </p>
         <AnimatedTitle
-          title="the j<b>o</b>urney <br /> s<b>o</b> far"
+          title="exp<b>e</b>rience"
           containerClass="mt-5 !text-black text-center"
         />
       </div>
@@ -18,32 +18,47 @@ const Experience = () => (
       <div className="mt-20 grid gap-7 md:grid-cols-3">
         {experience.map((item) => (
           <BentoTilt
-            key={item.company}
-            className="relative overflow-hidden rounded-md bg-black p-7 text-[#dfdff2] transition-transform duration-300 ease-out"
+            key={`${item.role}-${item.company}`}
+            className="relative flex min-h-[26rem] flex-col justify-between overflow-hidden rounded-md bg-black p-7 text-[#dfdff2] transition-transform duration-300 ease-out"
           >
-            <p className="font-general text-[10px] uppercase text-yellow-300">
+            {item.image && (
+              <img
+                src={item.image}
+                alt=""
+                aria-hidden="true"
+                loading="lazy"
+                className="absolute inset-0 size-full object-cover object-top"
+              />
+            )}
+            {/* Fades the logo into black so the card text stays readable */}
+            <div className="absolute inset-0 bg-[linear-gradient(to_top,#000_0%,rgba(0,0,0,0.94)_45%,rgba(0,0,0,0.45)_68%,rgba(0,0,0,0.1)_100%)]" />
+
+            <p className="relative w-fit rounded-full bg-black/70 px-3 py-1 font-general text-[10px] uppercase text-yellow-300">
               {item.period}
             </p>
-            <h3 className="mt-4 font-zentry text-4xl uppercase leading-none">
-              {item.role}
-            </h3>
-            {item.url ? (
-              <a
-                href={item.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-2 inline-block font-robert-medium text-blue-300 underline-offset-4 hover:underline"
-              >
-                {item.company}
-              </a>
-            ) : (
-              <p className="mt-2 font-robert-medium text-blue-300">
-                {item.company}
+
+            <div className="relative">
+              <h3 className="font-zentry text-4xl uppercase leading-none">
+                {item.role}
+              </h3>
+              {item.url ? (
+                <a
+                  href={item.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-2 inline-block font-robert-medium text-blue-300 underline-offset-4 hover:underline"
+                >
+                  {item.company}
+                </a>
+              ) : (
+                <p className="mt-2 font-robert-medium text-blue-300">
+                  {item.company}
+                </p>
+              )}
+              <p className="mt-4 font-circular-web text-sm opacity-70">
+                {item.description}
               </p>
-            )}
-            <p className="mt-4 font-circular-web text-sm opacity-60">
-              {item.description}
-            </p>
+            </div>
           </BentoTilt>
         ))}
       </div>

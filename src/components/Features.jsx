@@ -168,8 +168,8 @@ const Features = () => {
           <p className="max-w-md font-circular-web text-lg text-[#dfdff2] opacity-50">
             Startup, store, agency or enterprise, I take your idea from design
             to launch. {profile.projectCount} projects delivered as a{" "}
-            {profile.role}, across SaaS, web, mobile, Shopify, WordPress and
-            CRMs.
+            {profile.role}, across web and app development, UI/UX, backend,
+            AI, WordPress and e-commerce.
           </p>
         </div>
 
