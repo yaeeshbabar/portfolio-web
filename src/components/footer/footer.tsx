@@ -19,6 +19,9 @@ function Footer() {
           <CopyrightYear />
         </Suspense>{" "}
         {config.author}. All rights reserved.
+        <br />
+        Designed &amp; built with <span className="text-red-500">♥</span> by{" "}
+        {config.author.split(" ")[0]}
       </p>
       <SocialMediaButtons />
       <nav className="flex gap-4 sm:gap-6 z-10">

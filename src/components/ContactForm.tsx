@@ -10,6 +10,16 @@ import { Button } from "./ui/button";
 import { useRouter } from "next/navigation";
 import { z } from "zod";
 
+// When email isn't available, hand the message over to WhatsApp instead.
+const openWhatsApp = (fullName: string, email: string, message: string) => {
+  const text = `Hi Yaeesh! I'm ${fullName} (${email}).\n\n${message}`;
+  const url = `https://wa.me/923100786960?text=${encodeURIComponent(text)}`;
+  // "noopener" would make window.open return null, so detach it by hand
+  const win = window.open(url, "_blank");
+  if (win) win.opener = null;
+  else window.location.href = url;
+};
+
 const formSchema = z.object({
   fullName: z.string().min(2, "Full name must be at least 2 characters"),
   email: z.string().email("Please enter a valid email address"),
@@ -69,13 +79,11 @@ const ContactForm = () => {
         clearTimeout(timer);
       }, 1000);
     } catch (err) {
+      openWhatsApp(fullName, email, message);
       toast({
-        title: "Error",
-        description: "Something went wrong! Please try again.",
-        className: cn(
-          "top-0 w-full flex justify-center fixed md:max-w-7xl md:top-4 md:right-4"
-        ),
-        variant: "destructive",
+        title: "Opening WhatsApp",
+        description: "Your message is ready there, just hit send.",
+        className: cn("top-0 mx-auto flex fixed md:top-4 md:right-4"),
       });
     }
     setLoading(false);
@@ -109,7 +117,7 @@ const ContactForm = () => {
       <div className="grid w-full gap-1.5 mb-4">
         <Label htmlFor="content">Your Message</Label>
         <Textarea
-          placeholder="Tell me about about your project,"
+          placeholder="Tell me about your project"
           id="content"
           value={message}
           onChange={(e) => { setMessage(e.target.value); setErrors((p) => ({ ...p, message: undefined })); }}

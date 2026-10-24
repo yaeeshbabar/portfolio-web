@@ -106,7 +106,7 @@ const HeroSection = () => {
                       </Link>
                     </TooltipTrigger>
                     <TooltipContent side="bottom">
-                      <p>pls 🥹 🙏</p>
+                      <p>Open to new projects ⚡</p>
                     </TooltipContent>
                   </Tooltip>
                   <div className="flex items-center h-full gap-2">
